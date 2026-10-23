@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Collector Profile | Collector Choice</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0d12;--card:#1b1822;--line:#2e2a38;--tan:#eadfca;--tan2:#cdb48c;--muted:#a79e8c;--bur:#8c2442;--bur2:#b03a5c;--blue2:#86a9f0;--ok:#6fc29a;--bad:#ee7a8f}
+*{box-sizing:border-box}body{margin:0;color:var(--tan);font:16px/1.5 Manrope,system-ui,sans-serif;background:radial-gradient(800px 500px at 5% -5%,rgba(140,36,66,.35),transparent 60%),var(--bg)}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+header{border-bottom:1px solid rgba(205,180,140,.18)}header .wrap{display:flex;align-items:center;gap:18px;height:64px}
+.brand{font:700 20px 'Playfair Display',serif;color:var(--tan);text-decoration:none;margin-right:auto}
+a{color:var(--blue2)}h1,h2{font-family:'Playfair Display',serif;margin:0}h1{font-size:40px;margin:32px 0 4px}h2{font-size:26px;margin:36px 0 12px}
+.btn{font:700 14px Manrope,sans-serif;border:1.5px solid var(--tan);background:var(--tan);color:#1a1216;padding:8px 16px;border-radius:99px;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.acc{background:var(--bur);border-color:var(--bur2);color:#fff6e6}.btn.ghost{background:transparent;color:var(--tan)}.btn.sm{padding:5px 12px;font-size:12px}
+input,select,textarea{font:inherit;color:var(--tan);background:#120f16;border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;width:100%}
+label{display:block;font-size:13px;font-weight:700;margin:10px 0 3px;color:var(--tan2)}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;max-width:520px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.item img{width:100%;height:190px;object-fit:cover;background:#120f16}
+.item .b{padding:12px 14px;display:flex;flex-direction:column;gap:4px;flex:1}.item h3{margin:0;font-size:17px}
+.meta{font-size:13px;color:var(--muted)}.pill{font-size:12px;border:1.5px solid currentColor;border-radius:99px;padding:1px 9px;align-self:flex-start}
+.pending{color:var(--tan2)}.approved{color:var(--ok)}.rejected{color:var(--bad)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:8px}
+.msg{color:var(--tan2);margin:10px 0}footer{padding:40px 0;color:var(--muted);font-size:13px}
+</style></head><body>
+<header><div class="wrap"><a class="brand" href="index.html">Collector Choice</a><a class="btn sm" href="#" id="signin">Sign In</a></div></header>
+<main class="wrap" id="main"><p class="msg">Loading…</p></main>
+<footer><div class="wrap">Nothing shows publicly until it is approved. See something wrong? Use Report, or report child exploitation at <a href="https://report.cybertip.org" target="_blank" rel="noopener">report.cybertip.org</a>.</div></footer>
+<script type="module">
+import { supabase } from "./js/auth.js";
+const CATS=["Baseball","Football","Basketball","Hockey","Soccer","UFC / MMA","Boxing","Actors","Other"];
+const main=document.getElementById("main");
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+const btn=(x,c,f)=>{const b=el("button","btn sm "+c,x);b.onclick=f;return b};
+const viewName=(new URLSearchParams(location.search).get("u")||"").toLowerCase();
+const { data:{session} } = await supabase.auth.getSession();
+const me=session?.user||null;
+let myProfile=null,isAdmin=false;
+if(me){
+  myProfile=(await supabase.from("profiles").select("*").eq("user_id",me.id).maybeSingle()).data;
+  isAdmin=(await supabase.rpc("is_site_admin")).data===true;
+}
+const B="autograph-photos";
+async function shrink(file){const bmp=await createImageBitmap(file);const k=Math.min(1,1600/Math.max(bmp.width,bmp.height));const c=document.createElement("canvas");c.width=Math.round(bmp.width*k);c.height=Math.round(bmp.height*k);c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);return new Promise(r=>c.toBlob(r,"image/jpeg",0.85))}
+async function signAll(list){const withPhoto=list.filter(a=>a.photo_path);if(!withPhoto.length)return;const {data}=await supabase.storage.from(B).createSignedUrls(withPhoto.map(a=>a.photo_path),3600);(data||[]).forEach((d,i)=>{if(d.signedUrl)withPhoto[i].src=d.signedUrl})}
+const say=(t)=>{const m=el("p","msg",t);main.append(m);return m};
+function card(a,mode){
+  const c=el("div","item");
+  const src=a.src||a.link;if(src){const i=document.createElement("img");i.src=src;i.alt="";i.loading="lazy";i.referrerPolicy="no-referrer";i.onerror=()=>i.remove();c.append(i)}
+  const b=el("div","b");b.append(el("h3","",a.signer),el("div","meta",a.category));
+  if(a.note)b.append(el("div","meta",a.note));
+  if(mode==="own")b.append(el("span","pill "+a.status,a.status));
+  if(mode==="mod"&&a.owner)b.append(el("div","meta","by "+a.owner));
+  const r=el("div","row");
+  if(mode==="own")r.append(btn("Remove","ghost",async()=>{if(confirm("Remove this?")){if(a.photo_path)await supabase.storage.from(B).remove([a.photo_path]);await supabase.from("autographs").delete().eq("id",a.id);location.reload()}}));
+  if(mode==="view"&&me)r.append(btn("Report","ghost",async()=>{const why=prompt("What is wrong with this item?");if(why===null)return;const {error}=await supabase.from("reports").insert({autograph_id:a.id,reporter_id:me.id,reason:why.slice(0,300)});alert(error?"Could not send report.":"Thanks. We will review it.")}));
+  if(mode==="mod"){
+    r.append(btn("Approve","acc",()=>setStatus(a.id,"approved")),btn("Reject","ghost",()=>setStatus(a.id,"rejected")));
+    if(a.user_id)r.append(btn("Ban user","ghost",async()=>{if(!confirm("Ban this user and reject all their items?"))return;await supabase.from("bans").upsert({user_id:a.user_id});await supabase.from("autographs").update({status:"rejected"}).eq("user_id",a.user_id);location.reload()}));
+  }
+  b.append(r);c.append(b);return c;
+}
+async function setStatus(id,s){await supabase.from("autographs").update({status:s}).eq("id",id);location.reload()}
+
+if(viewName){
+  const {data:p}=await supabase.from("profiles").select("*").eq("username",viewName).maybeSingle();
+  if(!p)say("Profile not found.");
+  else{
+    main.append(el("h1","",p.display_name||p.username),el("div","meta","@"+p.username));
+    const {data:items}=await supabase.from("autographs").select("*").eq("user_id",p.user_id).eq("status","approved").order("created_at",{ascending:false});
+    await signAll(items||[]);const g=el("div","grid");(items||[]).forEach(a=>g.append(card(a,me&&me.id===p.user_id?"none":"view")));
+    main.append(el("h2","","Autograph collection"));
+    if(items&&items.length)main.append(g);else say("Nothing approved yet.");
+  }
+}else if(!me){
+  main.append(el("h1","","Show off your autographs"));
+  say("Sign in to make your collector profile. Everything is checked before it goes public.");
+}else if(!myProfile){
+  main.append(el("h1","","Make your profile"));
+  const f=el("div","box");
+  f.innerHTML='<label>Username (3-20 letters, numbers, underscore)</label><input id="un" maxlength="20"><label>Display name</label><input id="dn" maxlength="40"><div class="row"><button class="btn acc" id="go">Create profile</button></div>';
+  main.append(f,el("p","msg",""));
+  document.getElementById("go").onclick=async()=>{
+    const un=document.getElementById("un").value.trim().toLowerCase();
+    if(!/^[a-z0-9_]{3,20}$/.test(un)){alert("Username: 3-20 letters, numbers or underscore.");return}
+    const {error}=await supabase.from("profiles").insert({user_id:me.id,username:un,display_name:document.getElementById("dn").value.trim()||null});
+    if(error)alert(error.code==="23505"?"That username is taken.":"Could not create profile.");else location.reload();
+  };
+}else{
+  main.append(el("h1","",myProfile.display_name||myProfile.username));
+  const share=el("p","meta");const a=el("a","","Your public page");a.href="profile.html?u="+myProfile.username;share.append(a);main.append(share);
+  main.append(el("h2","","Add an autograph"));
+  const f=el("div","box");
+  f.innerHTML='<label>Signer</label><input id="sg" maxlength="80"><label>Category</label><select id="ct"></select><label>Upload a photo (optional)</label><input type="file" id="ph" accept="image/png,image/jpeg,image/webp"><label>Or photo link (https://...)</label><input id="lk" placeholder="https://"><label>Note (optional)</label><textarea id="nt" rows="2" maxlength="300"></textarea><div class="row"><button class="btn acc" id="add">Submit for approval</button></div>';
+  main.append(f);
+  document.getElementById("ct").append(...CATS.map(c=>new Option(c,c)));
+  document.getElementById("add").onclick=async()=>{
+    const signer=document.getElementById("sg").value.trim(),link=document.getElementById("lk").value.trim();
+    if(!signer){alert("Add the signer's name.");return}
+    if(link&&!/^https:\/\//.test(link)){alert("The link must start with https://");return}
+    const addBtn=document.getElementById("add");const file=document.getElementById("ph").files[0];
+    if(file&&file.size>25e6){alert("That photo is too big.");return}
+    addBtn.disabled=true;addBtn.textContent="Sending…";
+    let photo_path=null;
+    if(file){try{const blob=await shrink(file);photo_path=me.id+"/"+crypto.randomUUID()+".jpg";const up=await supabase.storage.from(B).upload(photo_path,blob,{contentType:"image/jpeg"});if(up.error)throw up.error}catch(e){alert("Photo upload failed: "+((e&&e.message)||e)+" (file type: "+(file.type||"unknown")+")");addBtn.disabled=false;addBtn.textContent="Submit for approval";return}}
+    const {error}=await supabase.from("autographs").insert({user_id:me.id,signer,category:document.getElementById("ct").value,link:link||null,photo_path,note:document.getElementById("nt").value.trim()||null});
+    if(error){if(photo_path)await supabase.storage.from(B).remove([photo_path]);alert("Could not save. You may be blocked from posting.");addBtn.disabled=false;addBtn.textContent="Submit for approval"}else{alert("Sent for approval. It shows publicly once approved.");location.reload()}
+  };
+  main.append(el("h2","","My items"));
+  const {data:mine}=await supabase.from("autographs").select("*").eq("user_id",me.id).order("created_at",{ascending:false});
+  await signAll(mine||[]);const g=el("div","grid");(mine||[]).forEach(x=>g.append(card(x,"own")));
+  if(mine&&mine.length)main.append(g);else say("No items yet.");
+}
+if(isAdmin){
+  main.append(el("h2","","Admin: waiting for approval"));
+  const {data:q}=await supabase.from("autographs").select("*").eq("status","pending").order("created_at").limit(50);
+  const ids=[...new Set((q||[]).map(x=>x.user_id))];
+  const names={};if(ids.length)((await supabase.from("profiles").select("user_id,username").in("user_id",ids)).data||[]).forEach(p=>names[p.user_id]=p.username);
+  await signAll(q||[]);const g=el("div","grid");(q||[]).forEach(x=>{x.owner=names[x.user_id]||"(no profile)";g.append(card(x,"mod"))});
+  if(q&&q.length)main.append(g);else say("Nothing waiting.");
+  main.append(el("h2","","Admin: reports"));
+  const {data:rp}=await supabase.from("reports").select("*").order("created_at",{ascending:false}).limit(30);
+  const aids=[...new Set((rp||[]).map(x=>x.autograph_id))];
+  const arts={};if(aids.length)((await supabase.from("autographs").select("*").in("id",aids)).data||[]).forEach(x=>arts[x.id]=x);
+  await signAll(Object.values(arts));const g2=el("div","grid");
+  (rp||[]).forEach(r=>{const a=arts[r.autograph_id];if(!a)return;a.owner=names[a.user_id]||"";const c=card(a,"mod");const w=el("div","meta","Report: "+(r.reason||"no reason"));c.querySelector(".b").prepend(w);
+    c.querySelector(".row").append(btn("Dismiss report","ghost",async()=>{await supabase.from("reports").delete().eq("id",r.id);location.reload()}));g2.append(c)});
+  if(g2.children.length)main.append(g2);else say("No reports.");
+}
+</script>
+</body></html>
