@@ -23,10 +23,25 @@ label{display:block;font-size:13px;font-weight:700;margin:10px 0 3px;color:var(-
 .pending{color:var(--tan2)}.approved{color:var(--ok)}.rejected{color:var(--bad)}
 .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:8px}
 .msg{color:var(--tan2);margin:10px 0}footer{padding:40px 0;color:var(--muted);font-size:13px}
+nav{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+nav a:not(.btn){color:var(--tan2);text-decoration:none;font-weight:600;font-size:14px}
+header .wrap{height:auto;min-height:64px;flex-wrap:wrap}
 </style></head><body>
-<header><div class="wrap"><a class="brand" href="index.html">Collector Choice</a><a class="btn sm" href="#" id="signin">Sign In</a></div></header>
+ <header><div class="wrap">
+<a class="brand" href="index.html">Collector Choice</a>
+<nav>
+<a href="index.html#vault">Vault</a>
+<a href="index.html#ttm">TTM log</a>
+<a href="guides.html">Guides</a>
+<a href="supplies.html">Supplies</a>
+<a class="btn sm" href="#" id="signin">Sign In</a>
+</nav>
+</div></header> 
 <main class="wrap" id="main"><p class="msg">Loading…</p></main>
-<footer><div class="wrap">Nothing shows publicly until it is approved. See something wrong? Use Report, or report child exploitation at <a href="https://report.cybertip.org" target="_blank" rel="noopener">report.cybertip.org</a>.</div></footer>
+<footer><div class="wrap">
+<nav><a href="about.html">About</a><a href="guides.html">Guides</a><a href="supplies.html">Supplies</a><a href="contact.html">Contact</a></nav>
+Nothing shows publicly until it is approved. See something wrong? Use Report, or report child exploitation at <a href="https://report.cybertip.org" target="_blank" rel="noopener">report.cybertip.org</a>.
+</div></footer>
 <script type="module">
 import { supabase } from "./js/auth.js";
 (async()=>{try{
