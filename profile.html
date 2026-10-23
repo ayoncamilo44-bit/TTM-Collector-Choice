@@ -4,14 +4,19 @@
 <title>Collector Profile | Collector Choice</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0f0d12;--card:#1b1822;--line:#2e2a38;--tan:#eadfca;--tan2:#cdb48c;--muted:#a79e8c;--bur:#8c2442;--bur2:#b03a5c;--blue2:#86a9f0;--ok:#6fc29a;--bad:#ee7a8f}
-*{box-sizing:border-box}body{margin:0;color:var(--tan);font:16px/1.5 Manrope,system-ui,sans-serif;background:radial-gradient(800px 500px at 5% -5%,rgba(140,36,66,.35),transparent 60%),var(--bg)}
-.wrap{max-width:980px;margin:0 auto;padding:0 20px}
-header{border-bottom:1px solid rgba(205,180,140,.18)}header .wrap{display:flex;align-items:center;gap:18px;height:64px}
-.brand{font:700 20px 'Playfair Display',serif;color:var(--tan);text-decoration:none;margin-right:auto}
+:root{--bg:#0f0d12;--card:#1b1822;--line:#2e2a38;--tan:#eadfca;--tan2:#cdb48c;--muted:#a79e8c;--bur:#8c2442;--bur2:#b03a5c;--blue:#4a7be0;--blue2:#86a9f0;--ok:#6fc29a;--bad:#ee7a8f}
+*{box-sizing:border-box}body{margin:0;color:var(--tan);font:16px/1.5 Manrope,system-ui,sans-serif;background:radial-gradient(800px 500px at 5% -5%,rgba(140,36,66,.35),transparent 60%),var(--bg);background-attachment:fixed}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+header{position:sticky;top:0;z-index:5;background:rgba(15,13,18,.85);backdrop-filter:blur(10px);border-bottom:1px solid rgba(205,180,140,.18)}
+header .wrap{display:flex;align-items:center;gap:18px;min-height:66px;flex-wrap:wrap}
+.brand{font:700 21px 'Playfair Display',serif;color:var(--tan);text-decoration:none;display:flex;align-items:center;gap:12px}
+.brand i{width:24px;height:32px;border-radius:5px;display:block;background:linear-gradient(150deg,var(--bur2),var(--bur));border:1px solid var(--tan2);transform:rotate(-7deg);box-shadow:8px 3px 0 -1px var(--blue)}
+nav{display:flex;gap:22px;flex-wrap:wrap;align-items:center;margin-left:auto}
+nav a:not(.btn){color:var(--muted);text-decoration:none;font-weight:600;font-size:15px}
+nav a:not(.btn):hover,nav a[aria-current]{color:var(--tan)}
 a{color:var(--blue2)}h1,h2{font-family:'Playfair Display',serif;margin:0}h1{font-size:40px;margin:32px 0 4px}h2{font-size:26px;margin:36px 0 12px}
 .btn{font:700 14px Manrope,sans-serif;border:1.5px solid var(--tan);background:var(--tan);color:#1a1216;padding:8px 16px;border-radius:99px;cursor:pointer;text-decoration:none;display:inline-block}
-.btn.acc{background:var(--bur);border-color:var(--bur2);color:#fff6e6}.btn.ghost{background:transparent;color:var(--tan)}.btn.sm{padding:5px 12px;font-size:12px}
+.btn.acc{background:linear-gradient(135deg,var(--bur2),var(--bur));border-color:var(--bur2);color:#fff6e6}.btn.ghost{background:transparent;color:var(--tan)}.btn.sm{padding:6px 14px;font-size:13px}
 input,select,textarea{font:inherit;color:var(--tan);background:#120f16;border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;width:100%}
 label{display:block;font-size:13px;font-weight:700;margin:10px 0 3px;color:var(--tan2)}
 .box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;max-width:520px}
@@ -22,21 +27,22 @@ label{display:block;font-size:13px;font-weight:700;margin:10px 0 3px;color:var(-
 .meta{font-size:13px;color:var(--muted)}.pill{font-size:12px;border:1.5px solid currentColor;border-radius:99px;padding:1px 9px;align-self:flex-start}
 .pending{color:var(--tan2)}.approved{color:var(--ok)}.rejected{color:var(--bad)}
 .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:8px}
-.msg{color:var(--tan2);margin:10px 0}footer{padding:40px 0;color:var(--muted);font-size:13px}
-nav{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
-nav a:not(.btn){color:var(--tan2);text-decoration:none;font-weight:600;font-size:14px}
-header .wrap{height:auto;min-height:64px;flex-wrap:wrap}
+.msg{color:var(--tan2);margin:10px 0}
+footer{border-top:1px solid rgba(205,180,140,.16);padding:30px 0 40px;color:var(--muted);font-size:13px}
+footer nav{margin:0 0 12px;gap:18px;justify-content:flex-start}footer nav a{color:var(--muted);font-size:13px}
 </style></head><body>
- <header><div class="wrap">
-<a class="brand" href="index.html">Collector Choice</a>
+<header><div class="wrap">
+<a class="brand" href="index.html"><i></i>Collector Choice</a>
 <nav>
 <a href="index.html#vault">Vault</a>
 <a href="index.html#ttm">TTM log</a>
 <a href="guides.html">Guides</a>
 <a href="supplies.html">Supplies</a>
+<a href="profile.html" aria-current="page">Profile</a>
+<a class="btn acc sm" href="index.html#vault">+ Add item</a>
 <a class="btn sm" href="#" id="signin">Sign In</a>
 </nav>
-</div></header> 
+</div></header>
 <main class="wrap" id="main"><p class="msg">Loading…</p></main>
 <footer><div class="wrap">
 <nav><a href="about.html">About</a><a href="guides.html">Guides</a><a href="supplies.html">Supplies</a><a href="contact.html">Contact</a></nav>
