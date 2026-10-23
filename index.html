@@ -172,7 +172,9 @@ label{display:block;font-size:13px;font-weight:700;margin:12px 0 4px;color:var(-
   let db = { items: [], ttm: [] }, filter = 'All', editing = null;
 
   try { const raw = localStorage.getItem(KEY); if (raw) db = Object.assign(db, JSON.parse(raw)); } catch (e) {}
-  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) { toast('Could not save in this browser'); } };
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) { toast('Could not save in this browser'); } window.dispatchEvent(new Event('cc:saved')); };
+  window.__ccGet = () => db;
+  window.__ccSet = d => { db = { items: d.items || [], ttm: d.ttm || [] }; try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) {} render(); };
   let tt; const toast = m => { const t = $('toast'); t.textContent = m; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 2500); };
 
   const STATUS = { sent: ['Waiting', 'warn'], back: ['Signed', 'ok'], fail: ['Failed', 'bad'] };
@@ -287,5 +289,40 @@ label{display:block;font-size:13px;font-weight:700;margin:12px 0 4px;color:var(-
 })();
 </script>
 <script type="module" src="./js/auth.js"></script>
+<script type="module">
+import { supabase } from "./js/auth.js";
+let uid = null, ready = false, timer = null;
+async function pull(user) {
+  if (uid === user.id) return;
+  uid = user.id;
+  const { data, error } = await supabase.from("user_vaults").select("data").eq("user_id", uid).maybeSingle();
+  if (error) { console.error(error); return; }
+  const local = window.__ccGet();
+  const cloud = (data && data.data) || { items: [], ttm: [] };
+  cloud.items = cloud.items || []; cloud.ttm = cloud.ttm || [];
+  if (localStorage.getItem("cc_synced") !== uid) {
+    const ids = new Set(cloud.items.map(i => i.id)), tids = new Set(cloud.ttm.map(r => r.id));
+    local.items.forEach(i => { if (!ids.has(i.id)) cloud.items.push(i); });
+    local.ttm.forEach(r => { if (!tids.has(r.id)) cloud.ttm.push(r); });
+    localStorage.setItem("cc_synced", uid);
+  }
+  window.__ccSet(cloud);
+  ready = true;
+  push();
+}
+function push() {
+  if (!ready) return;
+  clearTimeout(timer);
+  timer = setTimeout(async () => {
+    const { error } = await supabase.from("user_vaults").upsert({ user_id: uid, data: window.__ccGet(), updated_at: new Date().toISOString() });
+    if (error) console.error(error);
+  }, 800);
+}
+window.addEventListener("cc:saved", push);
+supabase.auth.onAuthStateChange((event, session) => {
+  if (session && (event === "INITIAL_SESSION" || event === "SIGNED_IN")) pull(session.user);
+  if (event === "SIGNED_OUT") { uid = null; ready = false; }
+});
+</script>
 </body>
 </html>
