@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Collector Supplies | Collector Choice</title>
+<link rel="canonical" href="https://ttm-collector-choice.com/supplies.html">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0d12;--bur:#8c2442;--bur2:#b03a5c;--blue:#4a7be0;--blue2:#86a9f0;--tan:#eadfca;--tan2:#cdb48c;--card:#17141c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tan);font:16px/1.6 Manrope,system-ui,sans-serif;
+background-image:radial-gradient(circle at 0 0,rgba(140,36,66,.35),transparent 45%),radial-gradient(circle at 100% 30%,rgba(74,123,224,.2),transparent 40%);background-attachment:fixed}
+header,main,footer{max-width:960px;margin:0 auto;padding:0 20px}
+header{display:flex;justify-content:space-between;align-items:center;padding-top:18px;padding-bottom:18px;border-bottom:1px solid rgba(205,180,140,.2)}
+.brand{font:700 20px 'Playfair Display',serif;color:var(--tan);text-decoration:none}
+.signin{margin-left:16px;background:transparent;color:var(--tan);border:1px solid var(--tan2);border-radius:8px;padding:6px 14px;font:600 14px Manrope,sans-serif;cursor:pointer}.signin:hover{background:var(--bur);border-color:var(--bur)}
+nav a{color:var(--tan2);text-decoration:none;margin-left:16px;font-size:14px}nav a:hover{color:var(--blue2)}
+h1{font:700 clamp(32px,6vw,48px)/1.1 'Playfair Display',serif;margin:40px 0 8px}
+h2{font:700 26px 'Playfair Display',serif;margin:44px 0 4px}
+.sub{color:var(--tan2);margin:0 0 18px}
+.note{font-size:13px;color:#9b917f}
+.kit{border:1px solid rgba(205,180,140,.3);background:linear-gradient(135deg,rgba(140,36,66,.25),rgba(74,123,224,.12));border-radius:14px;padding:20px 24px;margin-top:24px}
+.kit h3{margin:0 0 6px;font:700 20px 'Playfair Display',serif}.kit p{margin:0}
+.kit a{color:var(--blue2)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:16px}
+.tile{background:var(--card);border:1px solid rgba(205,180,140,.2);border-radius:14px;padding:20px;display:flex;flex-direction:column;position:relative;transition:.2s}
+.tile:hover{transform:translateY(-3px);border-color:var(--tan2);box-shadow:0 10px 30px rgba(140,36,66,.3)}
+.tile:before{content:"";position:absolute;inset:0 0 auto;height:3px;border-radius:14px 14px 0 0;background:linear-gradient(90deg,var(--bur),var(--blue))}
+.tile h3{margin:0 0 6px;font:700 18px 'Playfair Display',serif}
+.tile p{margin:0 0 16px;color:#c9bfa9;font-size:14.5px;flex:1}
+.btn{display:block;text-align:center;padding:10px;border-radius:9px;background:var(--bur);color:#fff;text-decoration:none;font-weight:600;font-size:14px}
+.btn:hover{background:var(--bur2)}.btn:focus-visible{outline:2px solid var(--blue2);outline-offset:2px}
+footer{text-align:center;color:#9b917f;font-size:13px;padding:50px 20px 40px}
+footer a{color:var(--tan2);margin:0 8px;text-decoration:none}
+</style></head><body>
+<header><a class="brand" href="index.html">Collector Choice</a>
+<nav><a href="guides.html">Guides</a><a href="about.html">About</a><a href="contact.html">Contact</a><button class="signin" id="signin">Sign In</button></nav></header>
+<main>
+<h1>Collector Supplies</h1>
+<p class="sub">Everything you need to protect, store, and mail your collection, from your first sleeve to a full TTM setup.</p>
+<p class="note">Some links are affiliate links. We may earn a commission at no extra cost to you. As an Amazon Associate I earn from qualifying purchases.</p>
+<div class="kit"><h3>Starter kit for your first TTM request</h3>
+<p>A sleeve and a toploader for the card, a piece of cardboard or an index card for backing, a #10 envelope to mail it in, a smaller return envelope with the right postage, and a short polite note. See the <a href="guides.html">beginner's guide</a> for the full walkthrough.</p></div>
+<div id="sections"></div>
+</main>
+<footer><a href="guides.html">Guides</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a>
+<p>© 2026 Collector Choice</p></footer>
+<script>
+// Sign In: calls your real login function when auth.js provides one.
+document.getElementById("signin").onclick=()=>{
+  if(typeof window.loginWithGoogle==="function") window.loginWithGoogle();
+  else alert("Sign in isn't connected on this page yet.");
+};
+// EDIT HERE: put your Amazon affiliate tag, or replace any url with your own affiliate link.
+const TAG = ""; // e.g. "yourtag-20"
+const amz = q => "https://www.amazon.com/s?k=" + encodeURIComponent(q) + (TAG ? "&tag=" + TAG : "");
+const S = [
+ ["Protect your cards","Keep cards clean and flat, whether they're in a binder or heading out in the mail.",[
+  ["Sleeves and toploaders","Penny sleeves for everyday protection, toploaders for anything valuable or going in the mail.",amz("penny sleeves toploaders")],
+  ["One-touch card holders","Magnetic holders that keep a card flat and easy to display.",amz("magnetic one touch card holders")],
+  ["9-pocket pages","Binder pages that show nine standard cards at a time.",amz("9 pocket card binder pages")],
+  ["Collector binders","A binder to hold the pages and keep a set or a player's cards together.",amz("trading card collector binder")]]],
+ ["Store your collection","Somewhere safe, dry, and out of the sun.",[
+  ["Storage boxes","Boxes sized for standard cards, good for bulk and for cards in sleeves.",amz("trading card storage boxes")],
+  ["Storage bins","Larger bins for several boxes, binders, and supplies in one spot.",amz("collectible storage bin")],
+  ["Display cases","For the cards you want to see, away from dust and fingerprints.",amz("trading card display case")]]],
+ ["Mailing a TTM request","What you need for a clean, easy-to-answer request. Always check the signer's own instructions first.",[
+  ["#10 envelopes","The standard business size for your outgoing request.",amz("#10 envelopes")],
+  ["#6 envelopes","A smaller envelope that can fit inside a #10, handy for your return envelope. Make sure your card fits.",amz("#6 3/4 envelopes")],
+  ["4×6 index cards","For a short note, or as a stiff backing so cards don't bend.",amz("4x6 index cards")],
+  ["Stamps","Check current postage for both the outgoing and return envelope. Buy at your post office or usps.com.","https://www.usps.com","Visit USPS"],
+  ["Thermal label printer","Optional. Prints clean address and return labels quickly if you mail a lot.",amz("thermal label printer 4x6")]]]
+];
+const root = document.getElementById("sections");
+S.forEach(([t,d,items])=>{
+  const s=document.createElement("section"), h=document.createElement("h2"), p=document.createElement("p"), g=document.createElement("div");
+  h.textContent=t; p.className="sub"; p.textContent=d; g.className="grid";
+  items.forEach(([n,desc,url,label])=>{
+    const c=document.createElement("div"); c.className="tile";
+    const h3=document.createElement("h3"); h3.textContent=n;
+    const pp=document.createElement("p"); pp.textContent=desc;
+    const a=document.createElement("a"); a.className="btn"; a.href=url; a.target="_blank";
+    a.rel="noopener noreferrer sponsored"; a.textContent=(label||"Shop on Amazon")+" ↗";
+    c.append(h3,pp,a); g.append(c);
+  });
+  s.append(h,p,g); root.append(s);
+});
+</script><script type="module" src="./js/auth.js"></script></body></html>
