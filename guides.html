@@ -1,6 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="./site.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0d12;--card:#1b1822;--line:#2e2a38;--tan:#eadfca;--tan2:#cdb48c;--muted:#a79e8c;--bur:#8c2442;--blue2:#86a9f0}
+body.site-info-page{margin:0;color:var(--tan);font:16px/1.65 Manrope,system-ui,sans-serif;background:radial-gradient(800px 500px at 5% -5%,rgba(140,36,66,.35),transparent 60%),var(--bg)}
+.site-info-page a{color:var(--blue2)}
+.site-info-header{border-bottom:1px solid rgba(205,180,140,.18);padding:14px 20px}
+.site-info-nav,.guide-contents,.site-info-footer-links{display:flex;gap:16px;flex-wrap:wrap;align-items:center;max-width:980px;margin:0 auto}
+.site-info-nav a{color:var(--tan2);text-decoration:none;font-weight:600;font-size:14px}
+.site-info-nav a:hover,.site-info-nav a[aria-current]{color:var(--tan)}
+.site-info-content{max-width:760px;margin:0 auto;padding:10px 20px 40px}
+.site-info-content h1,.site-info-content h2{font-family:'Playfair Display',serif;color:var(--tan)}
+.site-info-content h1{font-size:40px;line-height:1.15;margin:32px 0 12px}
+.site-info-content h2{font-size:26px;margin:36px 0 12px}
+.site-info-lead{font-size:18px;color:var(--tan2)}
+.guide-byline{color:var(--muted);font-size:14px}
+.site-info-rule{border:0;border-top:1px solid var(--line);margin:24px 0}
+.guide-contents{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;font-size:14px}
+.site-info-note{background:var(--card);border-left:4px solid var(--bur);border-radius:10px;padding:14px 18px;margin:32px 0}
+.guide-sources{border-top:1px solid var(--line);margin-top:36px;color:var(--muted);font-size:14px}
+.site-info-footer{border-top:1px solid var(--line);padding:30px 20px;color:var(--muted);font-size:13px}
+.site-info-footer-inner{max-width:980px;margin:0 auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.site-info-footer-links a{color:var(--muted)}
+</style>
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BWFZZ08NQQ"></script>
 <script>
@@ -58,11 +82,12 @@
 <body class="site-info-page">
     <header class="site-info-header">
         <nav class="site-info-nav" aria-label="Main navigation">
-            <a href="./index.html">Home</a>
-            <a href="./directory.html">Signer directory</a>
-            <a href="./guides.html" aria-current="page">Guides</a>
-            <a href="./community.html">Community</a>
-            <a href="https://www.ttm-collector-choice.com/">TTM Collector Choice</a>
+           <a href="./index.html">Home</a>
+<a href="./index.html#vault">Vault</a>
+<a href="./index.html#ttm">TTM log</a>
+<a href="./guides.html" aria-current="page">Guides</a>
+<a href="./supplies.html">Supplies</a>
+<a href="./profile.html">Profile</a>
         </nav>
     </header>
     <main class="site-info-content guide-article">
