@@ -29,12 +29,13 @@ label{display:block;font-size:13px;font-weight:700;margin:10px 0 3px;color:var(-
 <footer><div class="wrap">Nothing shows publicly until it is approved. See something wrong? Use Report, or report child exploitation at <a href="https://report.cybertip.org" target="_blank" rel="noopener">report.cybertip.org</a>.</div></footer>
 <script type="module">
 import { supabase } from "./js/auth.js";
+(async()=>{try{
 const CATS=["Baseball","Football","Basketball","Hockey","Soccer","UFC / MMA","Boxing","Actors","Other"];
 const main=document.getElementById("main");
 const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
 const btn=(x,c,f)=>{const b=el("button","btn sm "+c,x);b.onclick=f;return b};
 const viewName=(new URLSearchParams(location.search).get("u")||"").toLowerCase();
-const { data:{session} } = await supabase.auth.getSession();
+const { data:{session} } = await Promise.race([supabase.auth.getSession(),new Promise(r=>setTimeout(()=>r({data:{session:null}}),6000))]);
 const me=session?.user||null;
 let myProfile=null,isAdmin=false;
 if(me){
@@ -42,7 +43,8 @@ if(me){
   isAdmin=(await supabase.rpc("is_site_admin")).data===true;
 }
 const B="autograph-photos";
-async function shrink(file){const bmp=await createImageBitmap(file);const k=Math.min(1,1600/Math.max(bmp.width,bmp.height));const c=document.createElement("canvas");c.width=Math.round(bmp.width*k);c.height=Math.round(bmp.height*k);c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);return new Promise(r=>c.toBlob(r,"image/jpeg",0.85))}
+async function shrink(file){let src=file;if(/hei[cf]/i.test(file.type)||/\.hei[cf]$/i.test(file.name)){const h=(await import("https://cdn.jsdelivr.net/npm/heic2any@0.0.4/+esm")).default;const out=await h({blob:file,toType:"image/jpeg",quality:0.85});src=Array.isArray(out)?out[0]:out}
+  const bmp=await createImageBitmap(src);const k=Math.min(1,1600/Math.max(bmp.width,bmp.height));const c=document.createElement("canvas");c.width=Math.round(bmp.width*k);c.height=Math.round(bmp.height*k);c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);return new Promise(r=>c.toBlob(r,"image/jpeg",0.85))}
 async function signAll(list){const withPhoto=list.filter(a=>a.photo_path);if(!withPhoto.length)return;const {data}=await supabase.storage.from(B).createSignedUrls(withPhoto.map(a=>a.photo_path),3600);(data||[]).forEach((d,i)=>{if(d.signedUrl)withPhoto[i].src=d.signedUrl})}
 const say=(t)=>{const m=el("p","msg",t);main.append(m);return m};
 function card(a,mode){
@@ -63,6 +65,7 @@ function card(a,mode){
 }
 async function setStatus(id,s){await supabase.from("autographs").update({status:s}).eq("id",id);location.reload()}
 
+main.textContent="";
 if(viewName){
   const {data:p}=await supabase.from("profiles").select("*").eq("username",viewName).maybeSingle();
   if(!p)say("Profile not found.");
@@ -92,7 +95,7 @@ if(viewName){
   const share=el("p","meta");const a=el("a","","Your public page");a.href="profile.html?u="+myProfile.username;share.append(a);main.append(share);
   main.append(el("h2","","Add an autograph"));
   const f=el("div","box");
-  f.innerHTML='<label>Signer</label><input id="sg" maxlength="80"><label>Category</label><select id="ct"></select><label>Upload a photo (optional)</label><input type="file" id="ph" accept="image/png,image/jpeg,image/webp"><label>Or photo link (https://...)</label><input id="lk" placeholder="https://"><label>Note (optional)</label><textarea id="nt" rows="2" maxlength="300"></textarea><div class="row"><button class="btn acc" id="add">Submit for approval</button></div>';
+  f.innerHTML='<label>Signer</label><input id="sg" maxlength="80"><label>Category</label><select id="ct"></select><label>Upload a photo (optional)</label><input type="file" id="ph" accept="image/png,image/jpeg,image/webp,image/heic,image/heif,.heic,.heif"><label>Or photo link (https://...)</label><input id="lk" placeholder="https://"><label>Note (optional)</label><textarea id="nt" rows="2" maxlength="300"></textarea><div class="row"><button class="btn acc" id="add">Submit for approval</button></div>';
   main.append(f);
   document.getElementById("ct").append(...CATS.map(c=>new Option(c,c)));
   document.getElementById("add").onclick=async()=>{
@@ -128,5 +131,6 @@ if(isAdmin){
     c.querySelector(".row").append(btn("Dismiss report","ghost",async()=>{await supabase.from("reports").delete().eq("id",r.id);location.reload()}));g2.append(c)});
   if(g2.children.length)main.append(g2);else say("No reports.");
 }
+}catch(e){document.getElementById("main").textContent="Page error: "+((e&&e.message)||e)}})();
 </script>
 </body></html>
