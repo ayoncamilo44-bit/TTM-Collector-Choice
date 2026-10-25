@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#6366f1">
+    <meta name="theme-color" content="#0a1a3a">
     <meta name="google-site-verification" content="Bf-V4lwA8AEGC1P_8zE4N2MrT1-1uEEP6yN8kSKxH9A">
     <title>Collector Dashboard | Collector Choice</title>
     <meta name="description" content="Manage your signer records and import TTM collecting data in your Collector Choice dashboard.">
@@ -49,12 +49,12 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        darkBg: '#0a0f1a', darkCard: '#131824', darkBorder: '#1e2535', darkHover: '#1a2133',
-                        accent: '#6366f1', accentHover: '#818cf8', success: '#10b981', warning: '#f59e0b', danger: '#ef4444',
+                        darkBg: '#0a1a3a', darkCard: '#11264f', darkBorder: '#23407a', darkHover: '#1a3566',
+                        accent: '#f5b301', accentHover: '#ffd45c', success: '#10b981', warning: '#f5b301', danger: '#ef4444',
                     },
                     boxShadow: {
                         'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
-                        'glow': '0 0 20px rgba(99, 102, 241, 0.3)',
+                        'glow': '0 0 20px rgba(245, 179, 1, 0.3)',
                         'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
                     },
                 }
@@ -63,15 +63,15 @@
     </script>
 
     <style>
-        .glass { background: rgba(19, 24, 36, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .glass-card { background: rgba(19, 24, 36, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
-        .gradient-text { background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .gradient-bg { background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%); }
+        .glass { background: rgba(17, 38, 79, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glass-card { background: rgba(17, 38, 79, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
+        .gradient-text { background: linear-gradient(135deg, #f5b301 0%, #ffd45c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gradient-bg { background: linear-gradient(135deg, #f5b301 0%, #ffd45c 100%); }
         .smooth-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0a0f1a; }
-        ::-webkit-scrollbar-thumb { background: #1e2535; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+        ::-webkit-scrollbar-track { background: #0a1a3a; }
+        ::-webkit-scrollbar-thumb { background: #23407a; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #f5b301; }
     </style>
 </head>
 <body class="bg-darkBg text-gray-200 min-h-screen font-sans">
@@ -88,7 +88,7 @@
                 </a>
             </div>
             <div id="auth-nav-btn" class="hidden sm:block">
-                <button onclick="loginWithGoogle()" class="px-4 py-2 glass-card text-gray-300 rounded-lg text-sm font-medium smooth-transition hover:bg-darkHover flex items-center gap-2 border border-darkBorder"><i data-lucide="user" class="w-4 h-4"></i>Sign In</button>
+                <button id="signin" onclick="loginWithGoogle()" class="px-4 py-2 glass-card text-gray-300 rounded-lg text-sm font-medium smooth-transition hover:bg-darkHover flex items-center gap-2 border border-darkBorder"><i data-lucide="user" class="w-4 h-4"></i>Sign In</button>
             </div>
         </div>
     </header>
