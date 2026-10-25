@@ -29,15 +29,15 @@
     <meta name="twitter:description" content="Share through-the-mail sports autograph updates and collecting experiences.">
     <meta name="twitter:image" content="https://ttm-collector-choice.com/assets/legitimate-collector-social.png">
     <link rel="stylesheet" href="./affiliates.css">
-    
+
     <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -48,72 +48,72 @@
                         sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        darkBg: '#0a0f1a',
-                        darkCard: '#131824',
-                        darkBorder: '#1e2535',
-                        darkHover: '#1a2133',
-                        accent: '#6366f1',
-                        accentHover: '#818cf8',
+                        darkBg: '#0a1a3a',
+                        darkCard: '#11264f',
+                        darkBorder: '#23407a',
+                        darkHover: '#1a3566',
+                        accent: '#f5b301',
+                        accentHover: '#ffd45c',
                         success: '#10b981',
-                        warning: '#f59e0b',
+                        warning: '#f5b301',
                         danger: '#ef4444',
                     },
                     boxShadow: {
                         'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
-                        'glow': '0 0 20px rgba(99, 102, 241, 0.3)',
+                        'glow': '0 0 20px rgba(245, 179, 1, 0.3)',
                         'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
                     },
                 }
             }
         }
     </script>
-    
+
     <style>
         .glass {
-            background: rgba(19, 24, 36, 0.7);
+            background: rgba(17, 38, 79, 0.7);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
+
         .glass-card {
-            background: rgba(19, 24, 36, 0.6);
+            background: rgba(17, 38, 79, 0.6);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
-        
+
         .gradient-text {
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            background: linear-gradient(135deg, #f5b301 0%, #ffd45c 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         .gradient-bg {
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            background: linear-gradient(135deg, #f5b301 0%, #ffd45c 100%);
         }
-        
+
         .smooth-transition {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
         ::-webkit-scrollbar {
             width: 8px;
         }
-        
+
         ::-webkit-scrollbar-track {
-            background: #0a0f1a;
+            background: #0a1a3a;
         }
-        
+
         ::-webkit-scrollbar-thumb {
-            background: #1e2535;
+            background: #23407a;
             border-radius: 4px;
         }
-        
+
         ::-webkit-scrollbar-thumb:hover {
-            background: #6366f1;
+            background: #f5b301;
         }
     </style>
 </head>
@@ -131,7 +131,7 @@
                 </a>
             </div>
             <div id="auth-nav-btn" class="hidden sm:block">
-                <button onclick="loginWithGoogle()" class="px-4 py-2 glass-card text-gray-300 rounded-lg text-sm font-medium smooth-transition hover:bg-darkHover flex items-center gap-2 border border-darkBorder"><i data-lucide="user" class="w-4 h-4"></i>Sign In</button>
+                <button id="signin" onclick="loginWithGoogle()" class="px-4 py-2 glass-card text-gray-300 rounded-lg text-sm font-medium smooth-transition hover:bg-darkHover flex items-center gap-2 border border-darkBorder"><i data-lucide="user" class="w-4 h-4"></i>Sign In</button>
             </div>
         </div>
     </header>
@@ -209,8 +209,6 @@
                 <p class="text-gray-400">Share your TTM results and see what the community is receiving. Want to tell a longer story? Use Showcase.</p>
             </div>
             <div class="flex flex-wrap gap-3">
-            
-                </a>
                 <button type="button" onclick="openShareModal()" class="px-6 py-3 glass-card text-white font-semibold rounded-xl smooth-transition hover:bg-darkHover border border-darkBorder flex items-center gap-2">
                     <i data-lucide="plus-circle" class="w-5 h-5"></i>
                     Share a TTM Result
@@ -244,13 +242,13 @@
                         <i data-lucide="x" class="w-5 h-5"></i>
                     </button>
                 </div>
-                
+
                 <form id="communityPostForm" class="space-y-4">
                     <div>
                         <label for="postPlayerName" class="block text-sm font-medium text-gray-400 mb-2">Player Name</label>
                         <input id="postPlayerName" name="player_name" type="text" maxlength="120" required placeholder="e.g., Mike Trout" class="w-full px-4 py-3 glass-card rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-accent smooth-transition">
                     </div>
-                    
+
                     <div>
                         <label for="postResult" class="block text-sm font-medium text-gray-400 mb-2">Result</label>
                         <select id="postResult" name="result" required class="w-full px-4 py-3 glass-card rounded-xl text-white focus:outline-none focus:border-accent smooth-transition">
@@ -261,12 +259,12 @@
                             <option value="story">Collector Story (bought it, found it, or just love it)</option>
                         </select>
                     </div>
-                    
+
                     <div id="postDaysWrap">
                         <label for="postDays" class="block text-sm font-medium text-gray-400 mb-2">Days to Response</label>
                         <input id="postDays" name="days_to_response" type="number" min="0" max="3650" placeholder="e.g., 45" class="w-full px-4 py-3 glass-card rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-accent smooth-transition">
                     </div>
-                    
+
                     <div>
                         <label for="postExperience" class="block text-sm font-medium text-gray-400 mb-2">Your Experience</label>
                         <textarea id="postExperience" name="experience" rows="4" maxlength="2000" required placeholder="Share what happened. Please don't include private mailing addresses." class="w-full px-4 py-3 glass-card rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-accent smooth-transition"></textarea>
@@ -274,13 +272,13 @@
 <div>
   <label for="postPhoto" class="block text-sm font-medium text-gray-400 mb-2">Photo (optional)</label>
   <input id="postPhoto" name="photo" type="file" accept="image/jpeg,image/png,image/webp"
-    class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-accent file:text-white file:font-semibold">
+    class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-accent file:text-darkBg file:font-semibold">
   <p class="text-xs text-gray-500 mt-1">JPG, PNG, or WebP, up to 5 MB. Please don't photograph envelopes showing a home address.</p>
   <img id="postPhotoPreview" alt="Selected photo preview" class="hidden mt-3 rounded-xl max-h-48 border border-darkBorder">
 </div>
                     <p id="communityFormStatus" class="hidden text-sm" role="status" aria-live="polite"></p>
-                    
-                    <button type="submit" class="w-full px-4 py-3 gradient-bg text-white font-semibold rounded-xl smooth-transition hover:shadow-glow flex items-center justify-center gap-2">
+
+                    <button type="submit" class="w-full px-4 py-3 gradient-bg text-darkBg font-semibold rounded-xl smooth-transition hover:shadow-glow flex items-center justify-center gap-2">
                         <i data-lucide="send" class="w-5 h-5"></i>
                         Share with Community
                     </button>
@@ -301,7 +299,7 @@
                 <p id="postEditStatus" class="hidden text-sm" role="status" aria-live="polite"></p>
                 <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
                     <button id="postEditCancel" type="button" class="px-5 py-3 glass-card text-white rounded-xl border border-darkBorder">Cancel</button>
-                    <button id="postEditSave" type="submit" class="px-5 py-3 gradient-bg text-white font-semibold rounded-xl">Save changes</button>
+                    <button id="postEditSave" type="submit" class="px-5 py-3 gradient-bg text-darkBg font-semibold rounded-xl">Save changes</button>
                 </div>
             </form>
         </section>
@@ -311,8 +309,8 @@
     <footer class="glass border-t border-darkBorder py-8 px-6 mt-12">
         <div class="max-w-7xl mx-auto text-center text-sm text-gray-500">
             <nav class="mb-4 flex flex-wrap justify-center gap-4" aria-label="Information">
-                <a href="./guides.html">Guides</a><a href="./contact.html">Contact</a><              
-                    <button type="button" data-analytics-settings hidden>Cookie settings</button>
+                <a href="./guides.html">Guides</a><a href="./contact.html">Contact</a>
+                <button type="button" data-analytics-settings hidden>Cookie settings</button>
             </nav>
             &copy; 2026 Collector Choice. Powered by Supabase & GitHub Pages.
         </div>
