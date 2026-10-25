@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,12 +37,12 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        darkBg: '#0a0f1a', darkCard: '#131824', darkBorder: '#1e2535', darkHover: '#1a2133',
-                        accent: '#6366f1', accentHover: '#818cf8', success: '#10b981', warning: '#f59e0b', danger: '#ef4444',
+                        darkBg: '#0a1a3a', darkCard: '#11264f', darkBorder: '#23407a', darkHover: '#1a3566',
+                        accent: '#f5b301', accentHover: '#ffd45c', success: '#10b981', warning: '#f5b301', danger: '#ef4444',
                     },
                     boxShadow: {
                         'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
-                        'glow': '0 0 20px rgba(99, 102, 241, 0.3)',
+                        'glow': '0 0 20px rgba(245, 179, 1, 0.3)',
                         'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
                     },
                 }
@@ -51,15 +51,15 @@
     </script>
 
     <style>
-        .glass { background: rgba(19, 24, 36, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .glass-card { background: rgba(19, 24, 36, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
-        .gradient-text { background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .gradient-bg { background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%); }
+        .glass { background: rgba(17, 38, 79, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glass-card { background: rgba(17, 38, 79, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
+        .gradient-text { background: linear-gradient(135deg, #f5b301 0%, #ffd45c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gradient-bg { background: linear-gradient(135deg, #f5b301 0%, #ffd45c 100%); }
         .smooth-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0a0f1a; }
-        ::-webkit-scrollbar-thumb { background: #1e2535; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+        ::-webkit-scrollbar-track { background: #0a1a3a; }
+        ::-webkit-scrollbar-thumb { background: #23407a; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #f5b301; }
     </style>
 </head>
 <body class="bg-darkBg text-gray-200 min-h-screen font-sans">
@@ -76,7 +76,7 @@
                 </a>
             </div>
             <div id="auth-nav-btn" class="hidden sm:block">
-                <button onclick="loginWithGoogle()" class="px-4 py-2 glass-card text-gray-300 rounded-lg text-sm font-medium smooth-transition hover:bg-darkHover flex items-center gap-2 border border-darkBorder"><i data-lucide="user" class="w-4 h-4"></i>Sign In</button>
+                <button id="signin" onclick="loginWithGoogle()" class="px-4 py-2 glass-card text-gray-300 rounded-lg text-sm font-medium smooth-transition hover:bg-darkHover flex items-center gap-2 border border-darkBorder"><i data-lucide="user" class="w-4 h-4"></i>Sign In</button>
             </div>
         </div>
     </header>
@@ -105,7 +105,7 @@
             <a class="dl" href="supplies.html">Supplies</a>
             <a class="dl" href="https://fanatics.93n6tx.net/k4XbbM" target="_blank" rel="sponsored nofollow noopener">Topps Cards at Fanatics</a>
             <a class="dl" href="https://fanatics.93n6tx.net/gRVN40" target="_blank" rel="sponsored nofollow noopener">Shop Fanatics</a>
-            <a class="dl" href="community.html">Community</a
+            <a class="dl" href="community.html">Community</a>
             <a class="dl" href="dashboard.html">Dashboard</a>
             <a class="dl" href="https://www.ttm-collector-choice.com/">TTM Collector Choice</a>
         </nav>
@@ -188,7 +188,7 @@
     <footer class="glass border-t border-darkBorder py-8 px-6 mt-12">
         <div class="max-w-7xl mx-auto text-center text-sm text-gray-500">
             <nav class="mb-4 flex flex-wrap justify-center gap-4" aria-label="Information">
-                <a href="./guides.html">Guides</a><a href="./about.html">About</a><a href="./contact.html">Contact</a>
+                <a href="./guides.html">Guides</a><a href="./contact.html">Contact</a>
                 <button type="button" data-analytics-settings hidden>Cookie settings</button>
             </nav>
             &copy; 2026 Collector Choice. Powered by Supabase & GitHub Pages.
