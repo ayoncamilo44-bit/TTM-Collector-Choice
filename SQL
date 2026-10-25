@@ -1,2 +1,9 @@
 https://opksbvdpbjnipifzsaxi.supabase.co
 https://opksbvdpbjnipifzsaxi.supabase.co   
+alter table community_posts add column if not exists photo_url text;
+alter table community_posts add column if not exists player_name text;
+alter table community_posts add column if not exists result text;
+alter table community_posts add column if not exists days_to_response int;
+alter table community_posts add column if not exists experience text;
+alter table community_posts add column if not exists created_at timestamptz default now();
+alter table community_posts add column if not exists user_id uuid default auth.uid();
