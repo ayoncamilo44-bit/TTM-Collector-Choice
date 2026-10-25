@@ -6,35 +6,102 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0f0d12;--bur:#8c2442;--bur2:#b03a5c;--blue:#4a7be0;--blue2:#86a9f0;--tan:#eadfca;--tan2:#cdb48c;--card:#17141c}
+:root{--bg:#0a1a3a;--bur:#1f4fa8;--bur2:#2f6fd6;--blue:#f5b301;--blue2:#ffd45c;--tan:#f5f1e6;--tan2:#f5b301;--card:#11264f;--muted:#b9c6e0}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tan);font:16px/1.6 Manrope,system-ui,sans-serif;
-background-image:radial-gradient(circle at 0 0,rgba(140,36,66,.35),transparent 45%),radial-gradient(circle at 100% 30%,rgba(74,123,224,.2),transparent 40%);background-attachment:fixed}
+background-image:radial-gradient(circle at 0 0,rgba(31,79,168,.35),transparent 45%),radial-gradient(circle at 100% 30%,rgba(245,179,1,.12),transparent 40%);background-attachment:fixed}
 header,main,footer{max-width:960px;margin:0 auto;padding:0 20px}
-header{display:flex;justify-content:space-between;align-items:center;padding-top:18px;padding-bottom:18px;border-bottom:1px solid rgba(205,180,140,.2)}
+header{display:flex;justify-content:space-between;align-items:center;padding-top:18px;padding-bottom:18px;border-bottom:1px solid rgba(245,179,1,.2)}
+.hl{display:flex;align-items:center;gap:14px}
 .brand{font:700 20px 'Playfair Display',serif;color:var(--tan);text-decoration:none}
+.menu-btn{background:none;border:1.5px solid rgba(245,179,1,.5);color:var(--tan);width:42px;height:42px;border-radius:10px;display:grid;place-items:center;cursor:pointer;flex-shrink:0}
+.menu-btn:hover{background:#1a1622}
 .signin{margin-left:16px;background:transparent;color:var(--tan);border:1px solid var(--tan2);border-radius:8px;padding:6px 14px;font:600 14px Manrope,sans-serif;cursor:pointer}.signin:hover{background:var(--bur);border-color:var(--bur)}
 nav a{color:var(--tan2);text-decoration:none;margin-left:16px;font-size:14px}nav a:hover{color:var(--blue2)}
 h1{font:700 clamp(32px,6vw,48px)/1.1 'Playfair Display',serif;margin:40px 0 8px}
 h2{font:700 26px 'Playfair Display',serif;margin:44px 0 4px}
 .sub{color:var(--tan2);margin:0 0 18px}
-.note{font-size:13px;color:#9b917f}
-.kit{border:1px solid rgba(205,180,140,.3);background:linear-gradient(135deg,rgba(140,36,66,.25),rgba(74,123,224,.12));border-radius:14px;padding:20px 24px;margin-top:24px}
+.note{font-size:13px;color:var(--muted)}
+.kit{border:1px solid rgba(245,179,1,.3);background:linear-gradient(135deg,rgba(31,79,168,.3),rgba(245,179,1,.1));border-radius:14px;padding:20px 24px;margin-top:24px}
 .kit h3{margin:0 0 6px;font:700 20px 'Playfair Display',serif}.kit p{margin:0}
 .kit a{color:var(--blue2)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:16px}
-.tile{background:var(--card);border:1px solid rgba(205,180,140,.2);border-radius:14px;padding:20px;display:flex;flex-direction:column;position:relative;transition:.2s}
-.tile:hover{transform:translateY(-3px);border-color:var(--tan2);box-shadow:0 10px 30px rgba(140,36,66,.3)}
-.tile:before{content:"";position:absolute;inset:0 0 auto;height:3px;border-radius:14px 14px 0 0;background:linear-gradient(90deg,var(--bur),var(--blue))}
+.tile{background:var(--card);border:1px solid rgba(245,179,1,.2);border-radius:14px;padding:20px;display:flex;flex-direction:column;position:relative;transition:.2s}
+.tile:hover{transform:translateY(-3px);border-color:var(--tan2);box-shadow:0 10px 30px rgba(31,79,168,.3)}
+.tile:before{content:"";position:absolute;inset:0 0 auto;height:3px;border-radius:14px 14px 0 0;background:linear-gradient(90deg,var(--bur2),var(--blue))}
 .tile h3{margin:0 0 6px;font:700 18px 'Playfair Display',serif}
-.tile p{margin:0 0 16px;color:#c9bfa9;font-size:14.5px;flex:1}
+.tile p{margin:0 0 16px;color:#d6e0f2;font-size:14.5px;flex:1}
 .btn{display:block;text-align:center;padding:10px;border-radius:9px;background:var(--bur);color:#fff;text-decoration:none;font-weight:600;font-size:14px}
 .btn:hover{background:var(--bur2)}.btn:focus-visible{outline:2px solid var(--blue2);outline-offset:2px}
-footer{text-align:center;color:#9b917f;font-size:13px;padding:50px 20px 40px}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:50px 20px 40px}
 footer a{color:var(--tan2);margin:0 8px;text-decoration:none}
+#drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+#drawer-overlay.open{opacity:1;visibility:visible}
+#site-drawer{position:fixed;top:0;left:0;height:100%;width:18rem;max-width:85vw;background:#131824;border-right:1px solid #1e2535;z-index:70;transform:translateX(-100%);visibility:hidden;transition:transform .3s ease,visibility .3s;overflow-y:auto;display:flex;flex-direction:column;font-family:Manrope,system-ui,sans-serif}
+#site-drawer.open{transform:translateX(0);visibility:visible}
+#site-drawer a.dl{display:block;padding:.85rem 1.25rem;color:#d1d5db;font-weight:500;font-size:16px;text-decoration:none;border-bottom:1px solid #1e2535;border-left:3px solid transparent;margin:0}
+#site-drawer a.dl:hover{color:#fff;background:#1a2133}
+#site-drawer a.dl.on{color:#fff;background:#1a2133;border-left-color:#6366f1}
+@media (prefers-reduced-motion:reduce){#site-drawer,#drawer-overlay{transition:none}}
 </style></head><body>
-<header><a class="brand" href="index.html">Collector Choice</a>
-<nav><a href="guides.html">Guides</a><a href="about.html">About</a><a href="contact.html">Contact</a><button class="signin" id="signin">Sign In</button></nav></header>
+<header>
+<div class="hl">
+<button id="mobile-menu-btn" type="button" class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="site-drawer">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+</button>
+<a class="brand" href="index.html">Collector Choice</a>
+</div>
+<nav><a href="guides.html">Guides</a><a href="contact.html">Contact</a><button class="signin" id="signin">Sign In</button></nav>
+</header>
+
+<div id="drawer-overlay" aria-hidden="true"></div>
+<aside id="site-drawer" aria-label="Site menu" aria-hidden="true">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid #1e2535">
+    <span style="color:#fff;font-weight:700">Menu</span>
+    <button id="drawer-close" type="button" aria-label="Close menu" style="background:none;border:0;color:#9ca3af;padding:.25rem;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></button>
+  </div>
+  <div role="navigation" aria-label="Main">
+    <a class="dl" href="index.html">Home</a>
+    <a class="dl" href="directory.html">Directory</a>
+    <a class="dl" href="guides.html">Guides</a>
+    <a class="dl on" href="supplies.html">Supplies</a>
+    <a class="dl" href="https://fanatics.93n6tx.net/k4XbbM" target="_blank" rel="sponsored nofollow noopener">Topps Cards at Fanatics</a>
+    <a class="dl" href="https://fanatics.93n6tx.net/gRVN40" target="_blank" rel="sponsored nofollow noopener">Shop Fanatics</a>
+    <a class="dl" href="community.html">Community</a>
+    <a class="dl" href="dashboard.html">Dashboard</a>
+    <a class="dl" href="https://www.ttm-collector-choice.com/">TTM Collector Choice</a>
+  </div>
+  <div style="padding:1rem 1.25rem">
+    <button type="button" data-auth-btn onclick="loginWithGoogle()" style="width:100%;padding:.7rem 1rem;border-radius:10px;border:1px solid #1e2535;background:#1a2133;color:#d1d5db;font:600 15px Manrope,sans-serif;cursor:pointer">Sign In</button>
+  </div>
+  <a href="https://www.buymeacoffee.com/LegendaryCollection" target="_blank" rel="noopener noreferrer" style="margin:auto 1.25rem 1.25rem;padding:.7rem 1rem;border-radius:.5rem;background:#f59e0b;color:#0f172a;font-weight:600;text-align:center;font-size:.9rem;text-decoration:none">Buy Me a Coffee</a>
+</aside>
+<script>
+(function () {
+  var btn = document.getElementById('mobile-menu-btn');
+  var drawer = document.getElementById('site-drawer');
+  var overlay = document.getElementById('drawer-overlay');
+  var closeBtn = document.getElementById('drawer-close');
+  if (!btn || !drawer || !overlay) return;
+  function setOpen(open) {
+    drawer.classList.toggle('open', open);
+    overlay.classList.toggle('open', open);
+    drawer.setAttribute('aria-hidden', String(!open));
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (open && closeBtn) closeBtn.focus();
+  }
+  btn.addEventListener('click', function () { setOpen(!drawer.classList.contains('open')); });
+  closeBtn.addEventListener('click', function () { setOpen(false); btn.focus(); });
+  overlay.addEventListener('click', function () { setOpen(false); });
+  drawer.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) { setOpen(false); btn.focus(); }
+  });
+})();
+</script>
+
 <main>
 <h1>Collector Supplies</h1>
 <p class="sub">Everything you need to protect, store, and mail your collection, from your first sleeve to a full TTM setup.</p>
@@ -43,7 +110,7 @@ footer a{color:var(--tan2);margin:0 8px;text-decoration:none}
 <p>A sleeve and a toploader for the card, a piece of cardboard or an index card for backing, a #10 envelope to mail it in, a smaller return envelope with the right postage, and a short polite note. See the <a href="guides.html">beginner's guide</a> for the full walkthrough.</p></div>
 <div id="sections"></div>
 </main>
-<footer><a href="guides.html">Guides</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+<footer><a href="guides.html">Guides</a><a href="contact.html">Contact</a>
 <p>© 2026 Collector Choice</p></footer>
 <script>
 // Sign In: calls your real login function when auth.js provides one.
