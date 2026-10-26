@@ -1,25 +1,26 @@
-import { supabase } from "./auth.js";
+import { supabase } from "./auth.js?v=2";
 
 const TABLE = "community_posts";
 const BUCKET = "community-photos";
 const PAGE_SIZE = 10;
 const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
 
-const feed = document.getElementById("feedContainer");
-const loadMoreBtn = document.getElementById("loadMorePosts");
-const form = document.getElementById("communityPostForm");
-const statusEl = document.getElementById("communityFormStatus");
-const photoInput = document.getElementById("postPhoto");
-const photoPreview = document.getElementById("postPhotoPreview");
-const resultSelect = document.getElementById("postResult");
-const daysWrap = document.getElementById("postDaysWrap");
-const shareModal = document.getElementById("shareModal");
-const editModal = document.getElementById("postEditModal");
-const editForm = document.getElementById("postEditForm");
-const editText = document.getElementById("postEditText");
-const editCount = document.getElementById("postEditCount");
-const editStatus = document.getElementById("postEditStatus");
-const editCancel = document.getElementById("postEditCancel");
+const $ = (id) => document.getElementById(id);
+const feed = $("feedContainer");
+const loadMoreBtn = $("loadMorePosts");
+const form = $("communityPostForm");
+const statusEl = $("communityFormStatus");
+const photoInput = $("postPhoto");
+const photoPreview = $("postPhotoPreview");
+const resultSelect = $("postResult");
+const daysWrap = $("postDaysWrap");
+const shareModal = $("shareModal");
+const editModal = $("postEditModal");
+const editForm = $("postEditForm");
+const editText = $("postEditText");
+const editCount = $("postEditCount");
+const editStatus = $("postEditStatus");
+const editCancel = $("postEditCancel");
 
 let offset = 0;
 let editingId = null;
@@ -34,7 +35,7 @@ const RESULT_LABELS = {
 };
 
 function esc(s) {
-  return String(s ?? "").replace(/[&<>"']/g, c =>
+  return String(s ?? "").replace(/[&<>"']/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
@@ -54,7 +55,7 @@ function renderPost(p) {
   return `<article class="glass-card rounded-2xl p-6">
     <div class="flex justify-between gap-4 flex-wrap">
       <h2 class="text-lg font-bold text-white">${esc(p.player_name)}</h2>
-      <span class="text-xs text-gray-400">${new Date(p.created_at).toLocaleDateString()}</span>
+      <span class="text-xs text-gray-400">${p.created_at ? new Date(p.created_at).toLocaleDateString() : ""}</span>
     </div>
     <p class="text-sm text-accent mt-1">${esc(RESULT_LABELS[p.result] || p.result)}${days}</p>
     <p class="text-gray-300 mt-3 whitespace-pre-line leading-7">${esc(p.experience)}</p>
@@ -70,12 +71,13 @@ async function loadPosts(reset = false) {
   }
   const { data, error } = await supabase
     .from(TABLE)
-    .select("id, user_id, player_name, result, days_to_response, experience, photo_url, created_at")
+    .select("*")
     .order("created_at", { ascending: false })
     .range(offset, offset + PAGE_SIZE - 1);
 
   if (error) {
     feed.innerHTML = `<div class="glass-card rounded-2xl p-6 text-center text-red-400">Couldn't load posts: ${esc(error.message)}</div>`;
+    loadMoreBtn.classList.add("hidden");
     return;
   }
   if (reset && data.length === 0) {
@@ -135,7 +137,7 @@ form.addEventListener("submit", async (e) => {
       const { error: upErr } = await supabase.storage
         .from(BUCKET)
         .upload(path, photo, { contentType: photo.type });
-      if (upErr) throw upErr;
+      if (upErr) throw new Error("Photo upload: " + upErr.message);
       photo_url = supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
     }
 
@@ -148,7 +150,7 @@ form.addEventListener("submit", async (e) => {
       experience: fd.get("experience").trim(),
       photo_url
     });
-    if (error) throw error;
+    if (error) throw new Error("Post: " + error.message);
 
     form.reset();
     photoPreview.classList.add("hidden");
@@ -157,7 +159,7 @@ form.addEventListener("submit", async (e) => {
     showStatus(statusEl, "Shared! Thanks for posting.", false);
     await loadPosts(true);
   } catch (err) {
-    showStatus(statusEl, "Couldn't share: " + err.message, true);
+    showStatus(statusEl, "Couldn't share. " + err.message, true);
   } finally {
     submitBtn.disabled = false;
   }
