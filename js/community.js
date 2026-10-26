@@ -131,14 +131,18 @@ form.addEventListener("submit", async (e) => {
 
   try {
     let photo_url = null;
+    let photoWarning = null;
     if (photo) {
       const safeName = photo.name.replace(/[^a-zA-Z0-9._-]/g, "_");
       const path = `${currentUser.id}/${Date.now()}-${safeName}`;
       const { error: upErr } = await supabase.storage
         .from(BUCKET)
         .upload(path, photo, { contentType: photo.type });
-      if (upErr) throw new Error("Photo upload: " + upErr.message);
-      photo_url = supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+      if (upErr) {
+        photoWarning = upErr.message;
+      } else {
+        photo_url = supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+      }
     }
 
     const days = fd.get("days_to_response");
@@ -156,7 +160,7 @@ form.addEventListener("submit", async (e) => {
     photoPreview.classList.add("hidden");
     updateDaysVisibility();
     window.closeShareModal();
-    showStatus(statusEl, "Shared! Thanks for posting.", false);
+    showStatus(statusEl, photoWarning ? "Shared without the photo. The photo did not save: " + photoWarning : "Shared! Thanks for posting.", !!photoWarning);
     await loadPosts(true);
   } catch (err) {
     showStatus(statusEl, "Couldn't share. " + err.message, true);
